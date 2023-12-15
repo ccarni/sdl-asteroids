@@ -54,7 +54,7 @@ void Runner::Update(float deltaTime) {
     }
 
     inputManager->Update();
-    player->MovePlayer(deltaTime, inputManager->GetLRInput(), inputManager->GetUDInput());
+    player->MovePlayer(deltaTime, inputManager->GetLRInput(), inputManager->GetUDInput(), windowWidth, windowHeight);
 }
 
 void Runner::Draw() {

@@ -12,7 +12,7 @@ class Player {
         Player(float x, float y, float _width, float _height);
 
         void DrawPlayer(SDL_Renderer *renderer);
-        void MovePlayer(float deltaTime, float turnInput, float forwardInput);
+        void MovePlayer(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight);
         void Fire();
 
 

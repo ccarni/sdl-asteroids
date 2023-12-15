@@ -47,7 +47,7 @@ void Player::DrawPlayer(SDL_Renderer *renderer) {
     SDL_RenderDrawLineF(renderer, backRight[0], backRight[1], tipPoint[0], tipPoint[1]);
 }
 
-void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput) {
+void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight) {
     rotAngle -= turnInput * turnSpeed * deltaTime;
     
     if (forwardInput == 1) {
@@ -72,6 +72,10 @@ void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput) {
 
     position[0] += velocity[0] * deltaTime;
     position[1] -= velocity[1] * deltaTime; // inverted coordinates
+
+    //loop
+    position[0] = fmod(fmod(position[0], screenWidth) + screenWidth, screenWidth);
+    position[1] = fmod(fmod(position[1], screenHeight) + screenHeight, screenHeight);
 }
 
 void Player::Fire() {
