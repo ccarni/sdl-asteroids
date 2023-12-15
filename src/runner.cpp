@@ -41,6 +41,7 @@ void Runner::Init() {
 }
 
 void Runner::Update(float deltaTime) {
+    // std::cout << "update called";
     if (SDL_PollEvent( &windowEvent )){
             if ( windowEvent.type == SDL_QUIT ){
                 running = false;

@@ -9,6 +9,9 @@ void Player::Init() {
     thrustAcceleration = 3;
     dragConstant = 0.002;
     maxSpeed = 100;
+    tipPoint = {0.0f, 0.0f};
+    backLeft = {0.0f, 0.0f};
+    backRight = {0.0f, 0.0f};
 }
 
 Player::Player() {
@@ -68,7 +71,7 @@ void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput) {
     }
 
     position[0] += velocity[0] * deltaTime;
-    position[1] -= velocity[1] * deltaTime;
+    position[1] -= velocity[1] * deltaTime; // inverted coordinates
 }
 
 void Player::Fire() {
