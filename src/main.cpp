@@ -4,6 +4,8 @@
 
 int main( int argc, char *argv[] ) {
 
+    std::cout << "main running\n";
+
     Uint32 currentTime = 0;
     Uint32 lastTime = 0;
     float deltaTime = 0.0f;
@@ -23,9 +25,10 @@ int main( int argc, char *argv[] ) {
         SDL_Delay(1000.0f/FPS); // milliseconds
     }
 
+
     delete runner;
 
-    std::cout << "exiting\n";
+    std::cout << "exiting main\n";
 
     return 0;
 

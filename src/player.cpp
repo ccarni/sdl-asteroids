@@ -3,48 +3,63 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include "polygon.h"
 
 void Player::Init() {
+    /* 
+    Remember Units:
+        position: pixels (origin is topleft, positive moving down and right)
+        velocity: pixels/second
+        acceleration:pixels/(s^2)
+    */
+    position = {0.0f, 0.0f};
+    velocity = {0.0f, 0.0f};
+    acceleration = {0.0f, 0.0f};
+
+
     turnSpeed = 6;
-    thrustAcceleration = 3;
-    dragConstant = 0.002;
-    maxSpeed = 100;
-    tipPoint = {0.0f, 0.0f};
-    backLeft = {0.0f, 0.0f};
-    backRight = {0.0f, 0.0f};
+    maxSpeed = 150;
+    thrustAcceleration = 75;
+    dragConstant = 0.03;
+    polygon = new Polygon();
+
+    polygon->SetEdge(0, {0,1});
+    polygon->SetEdge(1, {1,2});
+    polygon->SetEdge(2, {2,0});
+
 }
 
 Player::Player() {
-    position[0] = 0;
-    position[1] = 0;
     Init();
+    width = 10;
+    height = 10;
 }
 
 Player::Player(float _width, float _height) {
-    position[0] = 0;
-    position[1] = 0;
+    Init();
     width = _width;
     height = _height; 
-    Init();
 }
 
 Player::Player(float x, float y, float _width, float _height) {
+    Init();
     position[0] = x;
     position[1] = y;
     width = _width;
     height = _height;
-    Init();
 }
 
-void Player::DrawPlayer(SDL_Renderer *renderer) {
-    tipPoint = {position[0] + (float)cos(rotAngle) * (width/2.0f), position[1] - (float)sin(rotAngle) * (height/2.0f)};
-    backLeft = {position[0] - (float)sin(rotAngle + M_PI/4.0f) * (width/2.0f), position[1] - (float)cos(rotAngle + M_PI/4.0f) * (height/2.0f)};
-    backRight = {position[0] + (float)sin(rotAngle - M_PI/4.0f) * (width/2.0f), position[1] + (float)cos(rotAngle - M_PI/4.0f) * (height/2.0f)};
+Player::~Player() {
+    delete polygon;
+};
 
-    SDL_RenderDrawPointF(renderer, position[0], position[1]);
-    SDL_RenderDrawLineF(renderer, tipPoint[0], tipPoint[1], backLeft[0], backLeft[1]);
-    SDL_RenderDrawLineF(renderer, backLeft[0], backLeft[1], backRight[0], backRight[1]);
-    SDL_RenderDrawLineF(renderer, backRight[0], backRight[1], tipPoint[0], tipPoint[1]);
+void Player::Draw(SDL_Renderer *renderer) {
+    polygon->SetVertex(0, {position[0] + (float)cos(rotAngle) * (width/2.0f), position[1] - (float)sin(rotAngle) * (height/2.0f)});
+    polygon->SetVertex(1, {position[0] - (float)sin(rotAngle + M_PI/4.0f) * (width/2.0f), position[1] - (float)cos(rotAngle + M_PI/4.0f) * (height/2.0f)});
+    polygon->SetVertex(2, {position[0] + (float)sin(rotAngle - M_PI/4.0f) * (width/2.0f), position[1] + (float)cos(rotAngle - M_PI/4.0f) * (height/2.0f)});
+
+    polygon->Draw(renderer);
+
 }
 
 void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight) {
@@ -59,8 +74,8 @@ void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput, fl
         acceleration = {-velocitySignX * (float)pow(velocity[0], 2)*dragConstant, -velocitySignY * (float)pow(velocity[1], 2)*dragConstant};
     }
 
-    velocity[0] += acceleration[0];
-    velocity[1] += acceleration[1];
+    velocity[0] += acceleration[0] * deltaTime;
+    velocity[1] += acceleration[1] * deltaTime;
 
     // clamp speed
     float speed = sqrt((float)pow(velocity[0], 2) + (float)pow(velocity[1], 2));

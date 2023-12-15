@@ -2,6 +2,7 @@
 #define PLAYER_H
 #include <SDL2/SDL.h>
 #include <vector>
+#include "polygon.h"
 
 class Player {
     public:
@@ -10,17 +11,16 @@ class Player {
         Player();
         Player(float _width, float _height);
         Player(float x, float y, float _width, float _height);
+        ~Player();
 
-        void DrawPlayer(SDL_Renderer *renderer);
+        void Draw(SDL_Renderer *renderer);
         void MovePlayer(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight);
         void Fire();
 
 
     private:
-        float width = 10, height = 10;
-        std::vector<float> position = {0.0f, 0.0f};
-        std::vector<float> velocity = {0.0f, 0.0f};
-        std::vector<float> acceleration = {0.0f, 0.0f};
+        float width, height;
+        std::vector<float> position, velocity, acceleration;
 
         float thrustAcceleration;
         float dragConstant;
@@ -29,7 +29,7 @@ class Player {
         float rotAngle = 0;
         float turnSpeed;
 
-        std::vector<float> tipPoint, backLeft, backRight;
+        Polygon* polygon;
 };
 
 #endif

@@ -14,20 +14,26 @@ void InputManager::Update() {
 
     const Uint8* keystates = SDL_GetKeyboardState(NULL);
 
-    if (keystates[SDL_SCANCODE_A]) {
+    if (keystates[SDL_SCANCODE_A] || keystates[SDL_SCANCODE_LEFT]) {
         lrInput--;
     }
 
-    if (keystates[SDL_SCANCODE_D]) {
+    if (keystates[SDL_SCANCODE_D] || keystates[SDL_SCANCODE_RIGHT]) {
         lrInput++;
     }
 
-    if (keystates[SDL_SCANCODE_W]) {
+    if (keystates[SDL_SCANCODE_W] || keystates[SDL_SCANCODE_UP]) {
         udInput++;
     }
 
-    if (keystates[SDL_SCANCODE_S]) {
+    if (keystates[SDL_SCANCODE_S] || keystates[SDL_SCANCODE_DOWN]) {
         udInput--;
+    }
+
+    while (SDL_PollEvent(&inputEvent)) {
+        if (inputEvent.type == SDL_QUIT) {
+            quit = true;
+        }
     }
 
 }

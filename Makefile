@@ -34,5 +34,8 @@ clean:
 run: $(EXE_FILE)
 	./$(EXE_FILE)
 
+clean:
+	rm -rf $(BIN_DIR)/*.o $(BIN_DIR)/*.exe
+
 # all:
 # 	g++ -Iinclude -Llib/sdl2-lib -o main src/main.cpp -lmingw32 -lSDL2main -lSDL2 -mwindows
