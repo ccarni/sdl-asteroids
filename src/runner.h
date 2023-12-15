@@ -9,7 +9,7 @@ class Runner {
     public:
         bool running;
 
-        bool GetRunning() const;
+        bool GetRunning() ;
 
         Runner();
         ~Runner();

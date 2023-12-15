@@ -21,7 +21,7 @@ Runner::Runner() {
 
 }
 
-bool Runner::GetRunning() const {
+bool Runner::GetRunning() {
     return running;
 }
 
@@ -37,7 +37,7 @@ Runner::~Runner() {
 }
 
 void Runner::Init() {
-
+    SDL_Init(SDL_INIT_EVERYTHING);
 }
 
 void Runner::Update(float deltaTime) {

@@ -2,10 +2,10 @@
 CC = g++
 
 #Directories
-BIN_DIR = bin
-INC_DIR = include
-LIB_DIR = lib
-SRC_DIR = src
+BIN_DIR := bin
+INC_DIR := include
+LIB_DIR := lib/sdl2-lib
+SRC_DIR := src
 
 # Files
 SRC_FILES := $(wildcard $(SRC_DIR)/*.cpp)
@@ -16,7 +16,7 @@ EXE_FILE := $(BIN_DIR)/main.exe
 CFLAGS := -std=c++17 -I$(INC_DIR)
 
 # Linker flags
-LDFLAGS := -L$(LIB_DIR) -lmingw32 -lSDL2main -lSDL2
+LDFLAGS := -L$(LIB_DIR) -lmingw32 -lSDL2main -lSDL2 
 
 # Build rule for executable
 $(EXE_FILE): $(OBJ_FILES)
@@ -33,3 +33,6 @@ clean:
 # Rule for running the executable
 run: $(EXE_FILE)
 	./$(EXE_FILE)
+
+# all:
+# 	g++ -Iinclude -Llib/sdl2-lib -o main src/main.cpp -lmingw32 -lSDL2main -lSDL2 -mwindows

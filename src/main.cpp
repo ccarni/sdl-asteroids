@@ -10,9 +10,9 @@ int main( int argc, char *argv[] ) {
 
     float FPS = 60;
     
-    SDL_Init( SDL_INIT_EVERYTHING );
-
     Runner* runner = new Runner();
+    runner->Init();
+
     while(runner->GetRunning()) {
         currentTime = SDL_GetTicks();
         deltaTime = (currentTime - lastTime) / 1000.0f; //milliseconds
