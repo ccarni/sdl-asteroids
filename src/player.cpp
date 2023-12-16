@@ -1,4 +1,5 @@
 #include "player.h"
+#include "bullet.h"
 #include <SDL2/SDL.h>
 #include <vector>
 #include <cmath>
@@ -16,7 +17,7 @@ void Player::Init() {
     velocity = {0.0f, 0.0f};
     acceleration = {0.0f, 0.0f};
 
-
+    rotAngle = 0.0f;
     turnSpeed = 6;
     maxSpeed = 150;
     thrustAcceleration = 75;
@@ -26,6 +27,7 @@ void Player::Init() {
     polygon->SetEdge(0, {0,1});
     polygon->SetEdge(1, {1,2});
     polygon->SetEdge(2, {2,0});
+
 
 }
 
@@ -47,18 +49,35 @@ Player::Player(float x, float y, float _width, float _height) {
     position[1] = y;
     width = _width;
     height = _height;
+    bullets.push_back(new Bullet(position[0], position[1], 1000.0f, rotAngle, 5000));
 }
 
 Player::~Player() {
     delete polygon;
+    for (Bullet* bullet : bullets) {
+        delete bullet;
+    }
+};
+
+void Player::Update(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight) {
+    MovePlayer(deltaTime, turnInput, forwardInput, screenWidth, screenHeight);
+    for (Bullet* bullet : bullets) {
+        //ADD CHECK CONDITION OR SOMETHING TO DELETE BULLETS
+        bullet->Update(deltaTime, screenWidth, screenHeight);
+    }
+
 };
 
 void Player::Draw(SDL_Renderer *renderer) {
-    polygon->SetVertex(0, {position[0] + (float)cos(rotAngle) * (width/2.0f), position[1] - (float)sin(rotAngle) * (height/2.0f)});
-    polygon->SetVertex(1, {position[0] - (float)sin(rotAngle + M_PI/4.0f) * (width/2.0f), position[1] - (float)cos(rotAngle + M_PI/4.0f) * (height/2.0f)});
-    polygon->SetVertex(2, {position[0] + (float)sin(rotAngle - M_PI/4.0f) * (width/2.0f), position[1] + (float)cos(rotAngle - M_PI/4.0f) * (height/2.0f)});
+    polygon->SetVertex(0, { (float)cos(rotAngle) * (width/2.0f), -(float)sin(rotAngle) * (height/2.0f)});
+    polygon->SetVertex(1, { -(float)sin(rotAngle + M_PI/4.0f) * (width/2.0f), -(float)cos(rotAngle + M_PI/4.0f) * (height/2.0f)});
+    polygon->SetVertex(2, {(float)sin(rotAngle - M_PI/4.0f) * (width/2.0f),(float)cos(rotAngle - M_PI/4.0f) * (height/2.0f)});
 
-    polygon->Draw(renderer);
+    polygon->Draw(renderer, position);
+
+    for (Bullet* bullet : bullets) {
+        bullet->Draw(renderer);
+    }
 
 }
 

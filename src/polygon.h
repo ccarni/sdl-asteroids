@@ -14,7 +14,7 @@ class Polygon {
         
         void AddVertex(std::vector<float> vertex);
         void AddEdge(std::vector<int> edge);
-        void Draw(SDL_Renderer *renderer);
+        void Draw(SDL_Renderer *renderer, std::vector<float> offset={0.0f,0.0f});
 
         std::vector<std::vector<float>> GetVertices();
         std::vector<std::vector<int>> GetEdges();

@@ -24,9 +24,11 @@ void Polygon::AddEdge(std::vector<int> edge) {
     edges.push_back(edge);
 };
 
-void Polygon::Draw(SDL_Renderer *renderer) {
+void Polygon::Draw(SDL_Renderer *renderer, std::vector<float> offset) {
+    
     for (std::vector<int> edge : edges){
-        SDL_RenderDrawLineF(renderer, vertices[edge[0]][0], vertices[edge[0]][1], vertices[edge[1]][0], vertices[edge[1]][1]);
+        SDL_RenderDrawLineF(renderer, vertices[edge[0]][0] + offset[0], vertices[edge[0]][1] + offset[1],
+                             vertices[edge[1]][0] + offset[0], vertices[edge[1]][1] + offset[1]);
     }
 }
 

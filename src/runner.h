@@ -2,8 +2,10 @@
 #define RUNNER_H
 
 #include "player.h"
+#include "asteroid.h"
 #include "inputmanager.h"
 #include <SDL2/SDL.h>
+#include <vector>
 
 class Runner {
     public:
@@ -29,6 +31,8 @@ class Runner {
         Player* player;
 
         InputManager* inputManager;
+
+        std::vector<Asteroid*> asteroids;
         
 };
 
