@@ -11,15 +11,17 @@ class InputManager {
         bool GetQuit();
         int GetLRInput();
         int GetUDInput();
+        bool GetSpace();
 
         void Update();
 
 
     private:
+        bool quit;
         int lrInput;
         int udInput;
+        bool spaceDown;
         SDL_Event inputEvent;
-        bool quit;
 };
 
 #endif

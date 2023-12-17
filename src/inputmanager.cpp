@@ -3,14 +3,16 @@
 #include <iostream>
 
 InputManager::InputManager() {
+    quit = false;
     lrInput = 0;
     udInput = 0;
-    quit = false;
+    spaceDown = false;
 }
 
 void InputManager::Update() {
     lrInput = 0;
     udInput = 0;
+    spaceDown = false;
 
     const Uint8* keystates = SDL_GetKeyboardState(NULL);
 
@@ -28,6 +30,10 @@ void InputManager::Update() {
 
     if (keystates[SDL_SCANCODE_S] || keystates[SDL_SCANCODE_DOWN]) {
         udInput--;
+    }
+
+    if (keystates[SDL_SCANCODE_SPACE]) {
+        spaceDown = true;
     }
 
     while (SDL_PollEvent(&inputEvent)) {
@@ -49,4 +55,8 @@ int InputManager::GetLRInput() {
 
 int InputManager::GetUDInput() {
     return udInput; 
+}
+
+bool InputManager::GetSpace() {
+    return spaceDown;
 }

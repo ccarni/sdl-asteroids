@@ -42,5 +42,12 @@ void Bullet::Update(float deltaTime, float screenWidth, float screenHeight) {
 };
 
 void Bullet::Draw(SDL_Renderer *renderer) {
+    if (!firing) {
+        return;
+    }
     SDL_RenderDrawPointF(renderer, position[0], position[1]);
+};
+
+bool Bullet::GetFiring() {
+    return firing;
 };

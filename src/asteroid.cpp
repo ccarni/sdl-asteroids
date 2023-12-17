@@ -52,7 +52,11 @@ void Asteroid::Update(float deltaTime, float screenWidth, float screenHeight) {
 };
 
 void Asteroid::Draw(SDL_Renderer *renderer) {
-    polygon->Draw(renderer, position);
+    
+    int screenWidth, screenHeight;
+    SDL_GetRendererOutputSize(renderer, &screenWidth, &screenHeight);
+
+    polygon->DrawLooped(renderer, screenWidth, screenHeight, position);
 }
 
 void Asteroid::MakeAsteroid(float minRadius, float maxRadius, float stepSize, float stepDeviation) {

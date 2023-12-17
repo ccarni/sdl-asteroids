@@ -49,7 +49,6 @@ Player::Player(float x, float y, float _width, float _height) {
     position[1] = y;
     width = _width;
     height = _height;
-    bullets.push_back(new Bullet(position[0], position[1], 1000.0f, rotAngle, 5000));
 }
 
 Player::~Player() {
@@ -61,9 +60,18 @@ Player::~Player() {
 
 void Player::Update(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight) {
     MovePlayer(deltaTime, turnInput, forwardInput, screenWidth, screenHeight);
-    for (Bullet* bullet : bullets) {
+    std::vector<int> spentBulletIndeces;
+    for (int i = 0; i < bullets.size(); i++) {
         //ADD CHECK CONDITION OR SOMETHING TO DELETE BULLETS
-        bullet->Update(deltaTime, screenWidth, screenHeight);
+        if (bullets[i]->GetFiring()) {
+            bullets[i]->Update(deltaTime, screenWidth, screenHeight);
+        } else {
+            spentBulletIndeces.push_back(i);
+        }
+    }
+
+    for (int i = spentBulletIndeces.size()-1; i >= 0; i--) {
+        bullets.erase(std::next(bullets.begin(), spentBulletIndeces[i]));
     }
 
 };
@@ -73,7 +81,10 @@ void Player::Draw(SDL_Renderer *renderer) {
     polygon->SetVertex(1, { -(float)sin(rotAngle + M_PI/4.0f) * (width/2.0f), -(float)cos(rotAngle + M_PI/4.0f) * (height/2.0f)});
     polygon->SetVertex(2, {(float)sin(rotAngle - M_PI/4.0f) * (width/2.0f),(float)cos(rotAngle - M_PI/4.0f) * (height/2.0f)});
 
-    polygon->Draw(renderer, position);
+    int screenWidth, screenHeight;
+    SDL_GetRendererOutputSize(renderer, &screenWidth, &screenHeight);
+
+    polygon->DrawLooped(renderer, screenWidth, screenHeight, position);
 
     for (Bullet* bullet : bullets) {
         bullet->Draw(renderer);
@@ -112,7 +123,11 @@ void Player::MovePlayer(float deltaTime, float turnInput, float forwardInput, fl
     position[1] = fmod(fmod(position[1], screenHeight) + screenHeight, screenHeight);
 }
 
-void Player::Fire() {
-
+void Player::Fire(float fireSpeed, Uint32 lifetime, bool allowMultipleBullets) {
+    if (!allowMultipleBullets && bullets.size() > 0) {
+        return;
+    }
+    //NOTE: assumes the first position of the polygon is the "tip" position
+    bullets.push_back(new Bullet(polygon->GetVertices()[0][0] + position[0], polygon->GetVertices()[0][1] + position[1], fireSpeed, rotAngle, lifetime));
 }
 

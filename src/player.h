@@ -17,7 +17,7 @@ class Player {
         void Update(float deltaTime, float turnInput, float forwardInput, float screenWidth, float screenHeight);
         void Draw(SDL_Renderer *renderer);
         
-        void Fire();
+        void Fire(float fireSpeed, Uint32 lifetime, bool allowMultipleBullets=false);
 
 
     private:

@@ -20,7 +20,7 @@ Runner::Runner() {
     player = new Player(windowWidth/2.0f, windowHeight/2.0f, 20, 20);
     inputManager = new InputManager();
 
-    asteroids.push_back(new Asteroid(120, 150, 0.2, 0.1, 300, 300, 5, 0));
+    asteroids.push_back(new Asteroid(120, 150, 0.2, 0.1, 750, 300, 50, 0));
 
 }
 
@@ -61,6 +61,9 @@ void Runner::Update(float deltaTime) {
 
     inputManager->Update();
     player->Update(deltaTime, inputManager->GetLRInput(), inputManager->GetUDInput(), windowWidth, windowHeight);
+    if (inputManager->GetSpace()) {
+        player->Fire(1000, 500, false);
+    }
 
     for (Asteroid* asteroid : asteroids) {
         asteroid->Update(deltaTime, windowWidth, windowHeight);
